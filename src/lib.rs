@@ -21,6 +21,7 @@
 //! | OpenBSD           | `*‑openbsd`        | [`getentropy`][6]
 //! | NetBSD            | `*‑netbsd`         | [`kern.arandom`][7]
 //! | Dragonfly BSD     | `*‑dragonfly`      | [`/dev/random`][8]
+//! | Cygwin            | `x86_64-pc-cygwin`    | [`getrandom`][1]
 //! | Solaris, illumos  | `*‑solaris`, `*‑illumos` | [`getrandom()`][9] if available, otherwise [`/dev/random`][10]
 //! | Fuchsia OS        | `*‑fuchsia`        | [`cprng_draw`][11]
 //! | Redox             | `*‑cloudabi`       | [`rand:`][12]
@@ -199,6 +200,9 @@ cfg_if! {
     } else if #[cfg(target_os = "openbsd")] {
         mod util_libc;
         #[path = "openbsd.rs"] mod imp;
+    } else if #[cfg(target_os = "cygwin")] {
+        mod util_libc;
+        #[path = "cygwin.rs"] mod imp;
     } else if #[cfg(target_os = "wasi")] {
         #[path = "wasi.rs"] mod imp;
     } else if #[cfg(target_os = "vxworks")] {
